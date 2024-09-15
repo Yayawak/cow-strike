@@ -20,7 +20,7 @@ public class BowlingController {
         whiteTeam = new Team("White");
         blackTeam = new Team("Black");
         brownTeam = new Team("Brown");
-        view = GameView.getInstance();
+        view = GameView.getInstance(); // call GameView singleton globally
         random = new Random();
     }
 
