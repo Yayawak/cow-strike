@@ -19,10 +19,12 @@ public class Cow {
         score += pins;
     }
 
+    // Set this cow as strike in a round
     public void setStrike() {
         this.isStrike = true;
     }
 
+    // Set this cow as spare in a round
     public void setSpare() {
         this.isSpare = true;
     }
@@ -47,6 +49,7 @@ public class Cow {
         return color;
     }
 
+    // each round we reset strike and spare
     public void resetRound() {
         isStrike = false;
         isSpare = false;
