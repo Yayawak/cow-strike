@@ -20,6 +20,7 @@ public class GameView {
         instance = new GameView();
     }
 
+    // Create Singleton instance for other module to use
     public static GameView getInstance() {
         if (instance == null) {
             StartView();
@@ -27,26 +28,23 @@ public class GameView {
         return instance;
     }
 
+    // Set up all views
     private GameView() {
-        // Setting up the frame
         frame = new JFrame("Cow Bowling Game");
         frame.setSize(600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        // Setting up game log area
         gameLog = new JTextArea();
         gameLog.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(gameLog);
 
-        // Setting up the buttons and labels
         startButton = new JButton("Start New Game");
         startButton.addActionListener(e -> onGameStart());
 
         rankingLabel = new JLabel("Final Rankings:");
         teamWinnerLabel = new JLabel("Winning Team:");
 
-        // Adding components to the frame
         frame.add(scrollPane, BorderLayout.CENTER);
         frame.add(startButton, BorderLayout.SOUTH);
         frame.add(rankingLabel, BorderLayout.NORTH);
@@ -55,9 +53,8 @@ public class GameView {
         frame.setVisible(true);
     }
 
-    // Method called when the start button is pressed
+    // Called controller when start-button clicked
     private void onGameStart() {
-        // Create a new game and start playing
         BowlingController game = new BowlingController();
         game.playGame();
     }
@@ -68,23 +65,43 @@ public class GameView {
                 + firstThrow + " + " + secondThrow + "\n");
     }
 
-    // Display the final ranking of all cows
+    // Display ranking by order
     public void displayFinalRanking(List<Cow> allCows) {
-        StringBuilder rankingText = new StringBuilder("<html><b>Final Rankings:</b><br>");
+        // put some color for the out
+        StringBuilder rankingText = new StringBuilder(
+                "<html><b style='color: blue;'>Final Rankings:</b><br>");
         allCows.sort((c1, c2) -> c2.getScore() - c1.getScore());
+
         int rank = 1;
-        for (Cow cow : allCows) {
-            rankingText.append("Rank ").append(rank).append(": ").append(cow.getName()).append(" (")
+        int displayedRank = 1;
+        int previousScore = -1;
+
+        for (int i = 0; i < allCows.size(); i++) {
+            Cow cow = allCows.get(i);
+
+            // checkif there are mutual ranking
+            if (i > 0 && cow.getScore() == previousScore) {
+                // Maintain the displayed rank if scores are equal
+                rank--;
+                displayedRank = rank;
+            } else {
+                // Update the displayed rank to the current rank
+                displayedRank = rank;
+            }
+
+            rankingText.append("Rank ").append(displayedRank).append(": ").append(cow.getName()).append(" (")
                     .append(cow.getColor()).append(") with ").append(cow.getScore()).append(" points.<br>");
+            previousScore = cow.getScore();
             rank++;
         }
+
         rankingText.append("</html>");
         rankingLabel.setText(rankingText.toString());
     }
 
     // Display the winning team
     public void displayTeamWinner(Team winningTeam) {
-        teamWinnerLabel.setText("<html><b>Winning Team:</b> " + winningTeam.getColor()
+        teamWinnerLabel.setText("<html><b style='color: #742A2D'>Winning Team:</b> " + winningTeam.getColor()
                 + " with " + winningTeam.getTotalScore() + " points!</html>");
     }
 

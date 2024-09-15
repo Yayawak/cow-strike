@@ -16,21 +16,24 @@ public class BowlingController {
     private Random random;
 
     public BowlingController() {
+        // Create Teams
         whiteTeam = new Team("White");
         blackTeam = new Team("Black");
         brownTeam = new Team("Brown");
-        // view = new GameView();
         view = GameView.getInstance();
         random = new Random();
     }
 
+    // On Start Game Logic
     public void playGame() {
         List<Cow> allCows = new ArrayList<>();
         allCows.addAll(whiteTeam.getCows());
         allCows.addAll(blackTeam.getCows());
         allCows.addAll(brownTeam.getCows());
 
+        // Loop playing each rounds
         for (int round = 1; round <= 10; round++) {
+            // Loop each cows
             for (Cow cow : allCows) {
                 int pins = 10;
                 int firstThrow = random.nextInt(pins + 1);
@@ -44,7 +47,6 @@ public class BowlingController {
                         secondThrow = 0;
                     }
                 }
-
                 // Check for white cow lying
                 if (cow.getColor().equals("White") && random.nextDouble() < 0.1) {
                     if (firstThrow == 0 && pins > 0) {

@@ -11,6 +11,7 @@ public class Team {
     public Team(String color) {
         this.color = color;
         cows = new ArrayList<>();
+        // create team for 3 cows
         for (int i = 1; i <= 3; i++) {
             cows.add(new Cow(color + " Cow " + i, color));
         }
